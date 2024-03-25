@@ -51,7 +51,7 @@ if (document.readyState === "complete") {
 const platformClient = require('platformClient');
 
 // Implicit grant credentials
-const CLIENT_ID = 37c2aa28-5ee4-458a-a4ae-d655103e5fc0'; ///'202478fd-e993-4321-ba71-f4815e9a1503';
+const CLIENT_ID = '37c2aa28-5ee4-458a-a4ae-d655103e5fc0'; ///'202478fd-e993-4321-ba71-f4815e9a1503';
 
 // Genesys Cloud environment
 const ENVIRONMENT = 'usw2.pure.cloud';
