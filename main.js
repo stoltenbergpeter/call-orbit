@@ -45,6 +45,8 @@ if (document.readyState === "complete") {
       createChannel();
   });
 }
+
+
 // Obtain a reference to the platformClient object
 const platformClient = require('platformClient');
 
@@ -108,35 +110,11 @@ function reAuth() {
 
   window.location.replace(`https://login.${ENVIRONMENT}/oauth/authorize?` + jQuery.param(queryStringData));
 }
-function executeworkflowB() {
-        $.ajax({
-            url: `https://api.${ENVIRONMENT}/api/v2/flows/datatables/5aad1395-dd31-4b3d-98d0-e93eef5d92c9/rows?showbrief=false&sortOrder=ascending`, 
-            type: GET",
-            contentType: 'application/json',
-            dataType: 'json',
-            async: true,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'bearer ' + token);
-            },
-            success: function (result, status, xhr) {
-                console.log(result);
-  
-                const obj = JSON.parse(JSON.stringify(result));
-  
-  
-            },
-            error: function (result, status, xhr) {
-                console.log(result);
-                var obj = JSON.parse(JSON.stringify(result));
-                console.log(obj);
-                console.log(status);
-                //reAuth();
-  
-            }
-        });
-    }
-function executeworkflowA() {
-        $.ajax({
+
+// Function to fetch data from an API (Replace this with your actual function)
+function fetchData() {
+    // Simulating fetching data from an API
+      $.ajax({
             url: `https://api.${ENVIRONMENT}/api/v2/flows/datatables/5aad1395-dd31-4b3d-98d0-e93eef5d92c9/rows?showbrief=false&sortOrder=ascending`, 
             type: "POST",
             contentType: 'application/json',
@@ -161,5 +139,63 @@ function executeworkflowA() {
   
             }
         });
-    }
+}
+
+// Function to generate table header
+function generateTableHeader() {
+    var headerRow = document.getElementById("table-header");
+    var keys = Object.keys(jsonResponse.entities[0]);
+    keys.forEach(function(key) {
+        var th = document.createElement("th");
+        th.textContent = key.toUpperCase();
+        headerRow.appendChild(th);
+    });
+    // Add extra column header for the button
+    var thButton = document.createElement("th");
+    thButton.textContent = "ACTION";
+    headerRow.appendChild(thButton);
+}
+
+// Function to generate table body
+function generateTableBody() {
+    var tbody = document.getElementById("table-body");
+    tbody.innerHTML = ""; // Clear existing tbody content
+    jsonResponse.entities.forEach(function(rowData) {
+        var tr = document.createElement("tr");
+        Object.values(rowData).forEach(function(value) {
+            var td = document.createElement("td");
+            td.textContent = value;
+            tr.appendChild(td);
+        });
+        // Add button column with "Pick up" button
+        var tdButton = document.createElement("td");
+        var button = document.createElement("button");
+        button.textContent = "Pick up";
+        tdButton.appendChild(button);
+        tr.appendChild(tdButton);
+        tbody.appendChild(tr);
+    });
+}
+
+// Event listener for "Get Data" button click
+document.getElementById("getDataBtn").addEventListener("click", function() {
+    fetchData().then(function(data) {
+        jsonResponse = data; // Update jsonResponse with fetched data
+        generateTableHeader();
+        generateTableBody();
+    }).catch(function(error) {
+        console.error("Error fetching data:", error);
+    });
+});
+
+// Initial generation of table on page load
+var jsonResponse = {
+    "entities": [], // Empty initially
+    "pageSize": 25,
+    "pageNumber": 1,
+    "total": 0,
+    "pageCount": 0
+};
+generateTableHeader();
+generateTableBody();
 
