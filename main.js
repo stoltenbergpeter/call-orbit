@@ -110,7 +110,38 @@ function reAuth() {
 
   window.location.replace(`https://login.${ENVIRONMENT}/oauth/authorize?` + jQuery.param(queryStringData));
 }
+function createChannel() {
+  $.ajax({
+      url: `https://api.${ENVIRONMENT}/api/v2/notifications/channels`,
+      type: "POST",
+      async: true,
+      beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', 'bearer ' + token);
+      },
+      success: function (result, status, xhr) {
+          console.log(result);
 
+          const obj = JSON.parse(JSON.stringify(result));
+          channelDetails.connectUri = obj.connectUri;
+          channelDetails.id = obj.id;
+
+          try {
+              getUserPresence(userDetails.id);
+          } catch (error) {
+              console.log("error in catch createChannel(), reauth!");
+
+              reAuth();
+          }
+
+      },
+      error: function (result, status, xhr) {
+          console.log(result);
+          console.log(status);
+          reAuth();
+
+      }
+  });
+}
 // Function to fetch data from an API (Replace this with your actual function)
 function fetchData() {
     // Simulating fetching data from an API
