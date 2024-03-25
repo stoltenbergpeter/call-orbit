@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+      <script src="main.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<div class="center">
-      <input class = "button1" type = "button" onclick = "executeworkflowA()" value = "Branch A">  
-  
-</div>
 <title>Dynamic Table from JSON</title>
 <style>
     table {
@@ -31,72 +28,9 @@
     </thead>
     <tbody id="table-body"></tbody>
 </table>
-  <script type = "text/javascript" src="main.js"></script> <!---- dev -->
-<script>
-// Sample JSON response
-  
-var jsonResponse = {
-    "entities": [
-        {
-            "WaitingInteraction1-ANI": "+19522107622",
-            "WaitingInteraction1": "5aad1395-dd31-4b3d-98d0-e93eef5d92c9",
-            "WaitingInteraction-TransferTarget": "",
-            "WaitingInteraction-Indicator": "Waiting",
-            "key": "1"
-        },
-        {
-            "WaitingInteraction1-ANI": "b",
-            "WaitingInteraction1": "a",
-            "WaitingInteraction-TransferTarget": "d",
-            "WaitingInteraction-Indicator": "c",
-            "key": "2"
-        }
-    ],
-    "pageSize": 25,
-    "pageNumber": 1,
-    "total": 2,
-    "pageCount": 1
-};
 
-// Function to generate table header
-function generateTableHeader() {
-    var headerRow = document.getElementById("table-header");
-    var keys = Object.keys(jsonResponse.entities[0]);
-    keys.forEach(function(key) {
-        var th = document.createElement("th");
-        th.textContent = key.toUpperCase();
-        headerRow.appendChild(th);
-    });
-    // Add extra column header for the button
-    var thButton = document.createElement("th");
-    thButton.textContent = "ACTION";
-    headerRow.appendChild(thButton);
-}
+<button id="getDataBtn">Get Data</button>
 
-// Function to generate table body
-function generateTableBody() {
-    var tbody = document.getElementById("table-body");
-    jsonResponse.entities.forEach(function(rowData) {
-        var tr = document.createElement("tr");
-        Object.values(rowData).forEach(function(value) {
-            var td = document.createElement("td");
-            td.textContent = value;
-            tr.appendChild(td);
-        });
-        // Add button column with "Pick up" button
-        var tdButton = document.createElement("td");
-        var button = document.createElement("button");
-        button.textContent = "Pick up";
-        tdButton.appendChild(button);
-        tr.appendChild(tdButton);
-        tbody.appendChild(tr);
-    });
-}
-
-// Generate table
-generateTableHeader();
-generateTableBody();
-</script>
 
 </body>
 </html>
