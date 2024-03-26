@@ -286,11 +286,12 @@ function wait(ms){
 }
 
 // Function to update table with selected row data
+// Function to update table with selected row data
 function updateTable(selectedRowData) {
     // Implement your logic to update the table with the selected row data
     console.log("Selected Row Data:", selectedRowData);
     return new Promise(function(resolve, reject) {
-        // Make AJAX request
+        // Make AJAX request to update the table row
         $.ajax({
             url: `https://api.${ENVIRONMENT}/api/v2/flows/datatables/5aad1395-dd31-4b3d-98d0-e93eef5d92c9/rows/1`,
             type: "PUT",
@@ -298,7 +299,7 @@ function updateTable(selectedRowData) {
             data: JSON.stringify({
                	  "WaitingInteraction1-ANI": "+19522107622",
                   "WaitingInteraction1": "5aad1395-dd31-4b3d-98d0-e93eef5d92c9",
-                  "WaitingInteraction-TransferTarget": "20b0c5cf-c59a-4c3d-936a-a5fe0630e09a",
+                  "WaitingInteraction-TransferTarget": "8ce2f903-78e6-4b50-b7aa-e1aa7e7c39ac",
                   "WaitingInteraction-Indicator": "Ready",
                   "key": "1"
             }),
@@ -309,8 +310,17 @@ function updateTable(selectedRowData) {
             success: function(result, status, xhr) {
                 console.log(result);
                 // Resolve promise with result
-              
                 resolve(result);
+                // After updating the table, fetch data again to refresh the table
+                fetchData()
+                    .then(function(data) {
+                        jsonResponse = data;
+                        generateTableHeader();
+                        generateTableBody();
+                    })
+                    .catch(function(error) {
+                        console.error("Error fetching data:", error);
+                    });
             },
             error: function(result, status, xhr) {
                 console.log(result);
@@ -320,6 +330,7 @@ function updateTable(selectedRowData) {
         });
     });
 }
+
 
 // Event listener for "Get Data" button click
 document.getElementById("getDataBtn").addEventListener("click", function() {
