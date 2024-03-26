@@ -79,6 +79,7 @@ if (window.location.hash) {
           userDetails.id = obj.id;
           userDetails.name = obj.name;
           userDetails.username = obj.username;
+           console.log(userDetails.id);
 
       }
   });
