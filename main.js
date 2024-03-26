@@ -281,7 +281,7 @@ function updateTable(selectedRowData) {
             data: JSON.stringify({
                	  "WaitingInteraction1-ANI": "+19522107622",
                   "WaitingInteraction1": "5aad1395-dd31-4b3d-98d0-e93eef5d92c9",
-                  "WaitingInteraction-TransferTarget": "8ce2f903-78e6-4b50-b7aa-e1aa7e7c39ac",
+                  "WaitingInteraction-TransferTarget": "20b0c5cf-c59a-4c3d-936a-a5fe0630e09a",
                   "WaitingInteraction-Indicator": "Ready",
                   "key": "1"
             }),
