@@ -255,7 +255,7 @@ function fetchData() {
             success: function (result, status, xhr) {
                 console.log(result);
   
-                const obj = JSON.parse(JSON.stringify(result));
+                const data = JSON.parse(JSON.stringify(result));
   
   
             },
