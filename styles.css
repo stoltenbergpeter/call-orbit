@@ -1,0 +1,46 @@
+/* styles.css */
+
+/* Modern styling for the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Styling for the "Get Data" button */
+#getDataBtn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#getDataBtn:hover {
+    background-color: #45a049;
+}
+
+#getDataBtn:active {
+    background-color: #3e8e41;
+}
+
+/* Responsive table */
+@media screen and (max-width: 600px) {
+    table {
+        overflow-x: auto;
+    }
+}
