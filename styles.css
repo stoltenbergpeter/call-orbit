@@ -4,7 +4,6 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    border-spacing: 0;
     background-color: #fff;
     border: 1px solid #ddd;
 }
@@ -17,6 +16,12 @@ th, td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd; /* Add border-right to align with table body */
+}
+
+/* Last th in thead, remove right border */
+th:last-child {
+    border-right: none;
 }
 
 /* Styling for the "Get Data" button */
