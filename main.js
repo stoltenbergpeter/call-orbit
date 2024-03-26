@@ -80,6 +80,7 @@ if (window.location.hash) {
           userDetails.name = obj.name;
           userDetails.username = obj.username;
            console.log(userDetails.id);
+        const userVal = userDetails.id
 
       }
   });
@@ -109,66 +110,7 @@ function reAuth() {
 
   window.location.replace(`https://login.${ENVIRONMENT}/oauth/authorize?` + jQuery.param(queryStringData));
 }
-function executeworkflowB() {
-        $.ajax({
-            url: `https://api.${ENVIRONMENT}/api/v2/flows/executions`, 
-            type: "POST",
-            contentType: 'application/json',
-            data: JSON.stringify({
-                "flowId": "d22e745e-1de7-43ff-8ac1-a35597bdc93f"
-            }),
-            dataType: 'json',
-            async: true,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'bearer ' + token);
-            },
-            success: function (result, status, xhr) {
-                console.log(result);
-  
-                const obj = JSON.parse(JSON.stringify(result));
-  
-  
-            },
-            error: function (result, status, xhr) {
-                console.log(result);
-                var obj = JSON.parse(JSON.stringify(result));
-                console.log(obj);
-                console.log(status);
-                //reAuth();
-  
-            }
-        });
-    }
-function executeworkflowA() {
-        $.ajax({
-            url: `https://api.${ENVIRONMENT}/api/v2/flows/executions`, 
-            type: "POST",
-            contentType: 'application/json',
-            data: JSON.stringify({
-                "flowId": "67230dc0-5838-450e-9b58-845e61e15949"
-            }),
-            dataType: 'json',
-            async: true,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'bearer ' + token);
-            },
-            success: function (result, status, xhr) {
-                console.log(result);
-  
-                const obj = JSON.parse(JSON.stringify(result));
-  
-  
-            },
-            error: function (result, status, xhr) {
-                console.log(result);
-                var obj = JSON.parse(JSON.stringify(result));
-                console.log(obj);
-                console.log(status);
-                //reAuth();
-  
-            }
-        });
-    }
+
 
 function createChannel() {
   $.ajax({
@@ -286,7 +228,7 @@ function generateTableHeader() {
 function generateTableBody() {
     var tbody = document.getElementById("table-body");
     tbody.innerHTML = ""; // Clear existing tbody content
-    jsonResponse.entities.forEach(function(rowData) {
+    jsonResponse.entities.forEach(function(rowData, index) {
         var tr = document.createElement("tr");
         Object.values(rowData).forEach(function(value) {
             var td = document.createElement("td");
@@ -297,9 +239,64 @@ function generateTableBody() {
         var tdButton = document.createElement("td");
         var button = document.createElement("button");
         button.textContent = "Pick up";
+        // Attach event listener to "Pick up" button
+        button.addEventListener("click", function() {
+            // Call the "Update Table" function with the rowData
+            updateTable(rowData);
+        });
         tdButton.appendChild(button);
         tr.appendChild(tdButton);
         tbody.appendChild(tr);
+    });
+}
+
+// Event listener for "Get Data" button click
+document.getElementById("getDataBtn").addEventListener("click", function() {
+    fetchData()
+        .then(function(data) {
+            jsonResponse = data; // Update jsonResponse with fetched data
+            generateTableHeader();
+            generateTableBody();
+        })
+        .catch(function(error) {
+            console.error("Error fetching data:", error);
+        });
+});
+
+
+
+// Function to update table with selected row data
+function updateTable(selectedRowData) {
+    // Implement your logic to update the table with the selected row data
+    console.log("Selected Row Data:", selectedRowData);
+    return new Promise(function(resolve, reject) {
+        // Make AJAX request
+        $.ajax({
+            url: `https://api.${ENVIRONMENT}/api/v2/flows/datatables/5aad1395-dd31-4b3d-98d0-e93eef5d92c9/rows/1`,
+            type: "PUT",
+            contentType: 'application/json',
+            data: JSON.stringify({
+               	  "WaitingInteraction1-ANI": "+19522107622",
+                  "WaitingInteraction1": "5aad1395-dd31-4b3d-98d0-e93eef5d92c9",
+                  "WaitingInteraction-TransferTarget": "",
+                  "WaitingInteraction-Indicator": "Waiting",
+                  "key": "1"
+            }),
+            dataType: 'json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', 'bearer ' + token);
+            },
+            success: function(result, status, xhr) {
+                console.log(result);
+                // Resolve promise with result
+                resolve(result);
+            },
+            error: function(result, status, xhr) {
+                console.log(result);
+                // Reject promise with error
+                reject(result);
+            }
+        });
     });
 }
 
