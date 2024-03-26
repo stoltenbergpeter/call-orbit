@@ -246,6 +246,7 @@ function generateTableBody() {
         button.addEventListener("click", function() {
             // Call the "Update Table" function with the rowData
             updateTable(rowData);
+           generateTableBody();
         });
         tdButton.appendChild(button);
         tr.appendChild(tdButton);
@@ -259,6 +260,7 @@ document.getElementById("getDataBtn").addEventListener("click", function() {
         .then(function(data) {
             jsonResponse = data; // Update jsonResponse with fetched data
             generateTableHeader();
+          wait(1000);
             generateTableBody();
         })
         .catch(function(error) {
@@ -266,7 +268,13 @@ document.getElementById("getDataBtn").addEventListener("click", function() {
         });
 });
 
-
+function wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
+}
 
 // Function to update table with selected row data
 function updateTable(selectedRowData) {
@@ -292,6 +300,7 @@ function updateTable(selectedRowData) {
             success: function(result, status, xhr) {
                 console.log(result);
                 // Resolve promise with result
+              
                 resolve(result);
             },
             error: function(result, status, xhr) {
