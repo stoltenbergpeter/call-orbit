@@ -254,6 +254,7 @@ function generateTableBody() {
               "total": 0,
               "pageCount": 0
           };
+          fetchData()
            generateTableBody();
         });
         tdButton.appendChild(button);
