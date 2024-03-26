@@ -246,6 +246,14 @@ function generateTableBody() {
         button.addEventListener("click", function() {
             // Call the "Update Table" function with the rowData
             updateTable(rowData);
+                 wait(1000);
+          var jsonResponse = {
+              "entities": [], // Empty initially
+              "pageSize": 25,
+              "pageNumber": 1,
+              "total": 0,
+              "pageCount": 0
+          };
            generateTableBody();
         });
         tdButton.appendChild(button);
@@ -260,7 +268,7 @@ document.getElementById("getDataBtn").addEventListener("click", function() {
         .then(function(data) {
             jsonResponse = data; // Update jsonResponse with fetched data
             generateTableHeader();
-          wait(1000);
+   
             generateTableBody();
         })
         .catch(function(error) {
