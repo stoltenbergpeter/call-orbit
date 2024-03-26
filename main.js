@@ -245,7 +245,7 @@ function fetchData() {
     // Simulating fetching data from an API
       $.ajax({
             url: `https://api.${ENVIRONMENT}/api/v2/flows/datatables/5aad1395-dd31-4b3d-98d0-e93eef5d92c9/rows?showbrief=false&sortOrder=ascending`, 
-            type: "POST",
+            type: "GET",
             contentType: 'application/json',
             dataType: 'json',
             async: true,
