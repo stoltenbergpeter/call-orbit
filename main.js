@@ -242,32 +242,28 @@ function getUserPresence(userId) {
 }
 
 function fetchData() {
-    // Simulating fetching data from an API
-      $.ajax({
-            url: `https://api.${ENVIRONMENT}/api/v2/flows/datatables/5aad1395-dd31-4b3d-98d0-e93eef5d92c9/rows?showbrief=false&sortOrder=ascending`, 
+    return new Promise(function(resolve, reject) {
+        // Make AJAX request
+        $.ajax({
+            url: `https://api.${ENVIRONMENT}/api/v2/flows/datatables/5aad1395-dd31-4b3d-98d0-e93eef5d92c9/rows?showbrief=false&sortOrder=ascending`,
             type: "GET",
             contentType: 'application/json',
             dataType: 'json',
-            async: true,
-            beforeSend: function (xhr) {
+            beforeSend: function(xhr) {
                 xhr.setRequestHeader('Authorization', 'bearer ' + token);
             },
-            success: function (result, status, xhr) {
+            success: function(result, status, xhr) {
                 console.log(result);
-  
-                const data = JSON.parse(JSON.stringify(result));
-  
-  
+                // Resolve promise with result
+                resolve(result);
             },
-            error: function (result, status, xhr) {
+            error: function(result, status, xhr) {
                 console.log(result);
-                var obj = JSON.parse(JSON.stringify(result));
-                console.log(obj);
-                console.log(status);
-                //reAuth();
-  
+                // Reject promise with error
+                reject(result);
             }
         });
+    });
 }
 
 // Function to generate table header
@@ -308,14 +304,17 @@ function generateTableBody() {
 
 // Event listener for "Get Data" button click
 document.getElementById("getDataBtn").addEventListener("click", function() {
-    fetchData().then(function(data) {
-        jsonResponse = data; // Update jsonResponse with fetched data
-        generateTableHeader();
-        generateTableBody();
-    }).catch(function(error) {
-        console.error("Error fetching data:", error);
-    });
+    fetchData()
+        .then(function(data) {
+            jsonResponse = data; // Update jsonResponse with fetched data
+            generateTableHeader();
+            generateTableBody();
+        })
+        .catch(function(error) {
+            console.error("Error fetching data:", error);
+        });
 });
+
 
 // Initial generation of table on page load
 var jsonResponse = {
