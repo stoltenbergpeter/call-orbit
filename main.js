@@ -211,14 +211,24 @@ function fetchData() {
 
 // Function to generate table header
 // Function to generate table header
+// Function to generate table header
 function generateTableHeader() {
     var headerRow = document.getElementById("table-header");
     headerRow.innerHTML = ""; // Clear existing header content
+    
+    // Add "Orbit" column header as the leftmost column
+    var thOrbit = document.createElement("th");
+    thOrbit.textContent = "Orbit";
+    headerRow.appendChild(thOrbit);
+    
+    // Add headers for other columns
     var keys = Object.keys(jsonResponse.entities[0]);
     keys.forEach(function(key) {
-        var th = document.createElement("th");
-        th.textContent = key.toUpperCase();
-        headerRow.appendChild(th);
+        if (key !== "key") { // Skip the original "key" column
+            var th = document.createElement("th");
+            th.textContent = key.toUpperCase();
+            headerRow.appendChild(th);
+        }
     });
     // Add extra column header for the action button
     var thButton = document.createElement("th");
@@ -226,18 +236,28 @@ function generateTableHeader() {
     headerRow.appendChild(thButton);
 }
 
-
 // Function to generate table body
 function generateTableBody() {
     var tbody = document.getElementById("table-body");
     tbody.innerHTML = ""; // Clear existing tbody content
+    
     jsonResponse.entities.forEach(function(rowData, index) {
         var tr = document.createElement("tr");
-        Object.values(rowData).forEach(function(value) {
-            var td = document.createElement("td");
-            td.textContent = value;
-            tr.appendChild(td);
+        
+        // Add "Orbit" column data as the leftmost column
+        var tdOrbit = document.createElement("td");
+        tdOrbit.textContent = rowData.key;
+        tr.appendChild(tdOrbit);
+        
+        // Add data for other columns
+        Object.entries(rowData).forEach(function([key, value]) {
+            if (key !== "key") { // Skip the original "key" column
+                var td = document.createElement("td");
+                td.textContent = value;
+                tr.appendChild(td);
+            }
         });
+        
         // Add button column with "Pick up" button
         var tdButton = document.createElement("td");
         var button = document.createElement("button");
@@ -246,19 +266,10 @@ function generateTableBody() {
         button.addEventListener("click", function() {
             // Call the "Update Table" function with the rowData
             updateTable(rowData);
-                 wait(1000);
-          var jsonResponse = {
-              "entities": [], // Empty initially
-              "pageSize": 25,
-              "pageNumber": 1,
-              "total": 0,
-              "pageCount": 0
-          };
-          fetchData()
-           generateTableBody();
         });
         tdButton.appendChild(button);
         tr.appendChild(tdButton);
+        
         tbody.appendChild(tr);
     });
 }
