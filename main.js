@@ -210,19 +210,22 @@ function fetchData() {
 }
 
 // Function to generate table header
+// Function to generate table header
 function generateTableHeader() {
     var headerRow = document.getElementById("table-header");
+    headerRow.innerHTML = ""; // Clear existing header content
     var keys = Object.keys(jsonResponse.entities[0]);
     keys.forEach(function(key) {
         var th = document.createElement("th");
         th.textContent = key.toUpperCase();
         headerRow.appendChild(th);
     });
-    // Add extra column header for the button
+    // Add extra column header for the action button
     var thButton = document.createElement("th");
     thButton.textContent = "ACTION";
     headerRow.appendChild(thButton);
 }
+
 
 // Function to generate table body
 function generateTableBody() {
